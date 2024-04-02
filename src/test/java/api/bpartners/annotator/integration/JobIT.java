@@ -97,12 +97,7 @@ public class JobIT extends FacadeIT {
         .ownerEmail(crupdateJob.getOwnerEmail())
         .name(crupdateJob.getName())
         .type(crupdateJob.getType())
-        .labels(labels)
-        .annotationStatistics(labels.stream().map(JobIT::initAnnotationNumberFrom).toList());
-  }
-
-  static AnnotationNumberPerLabel initAnnotationNumberFrom(Label label) {
-    return new AnnotationNumberPerLabel().labelName(label.getName()).numberOfAnnotations(0L);
+        .labels(labels);
   }
 
   @Test
@@ -113,7 +108,7 @@ public class JobIT extends FacadeIT {
     List<Job> actualJobs = api.getJobs(1, 10, null, null, null);
 
     // assertEquals(8, actualJobs.size());
-    assertTrue(actualJobs.contains(job1AsRestListComponentAsAdminView()));
+    assertTrue(actualJobs.contains(job1AsAdminView()));
   }
 
   @Test
@@ -146,11 +141,11 @@ public class JobIT extends FacadeIT {
     // assertEquals(1, actualToCorrectJobs.size());
     // FAILED JOBS ARE NOW HIDDEN
     assertEquals(0, actualFailedJobs.size());
-    assertTrue(actualJobsFilteredByExactName.contains(job1AsRestListComponentAsAdminView()));
+    assertTrue(actualJobsFilteredByExactName.contains(job1AsAdminView()));
     assertTrue(actualJobsFilteredByNoMatchingName.isEmpty());
-    assertTrue(actualAllJobs.contains(job1AsRestListComponentAsAdminView()));
-    assertTrue(actualJobsFilteredByCommonName.contains(job1AsRestListComponentAsAdminView()));
-    assertTrue(actualJobsFilteredByType.contains(job9AsRestListComponentAsAdminView()));
+    assertTrue(actualAllJobs.contains(job1AsAdminView()));
+    assertTrue(actualJobsFilteredByCommonName.contains(job1AsAdminView()));
+    assertTrue(actualJobsFilteredByType.contains(job9()));
 
     assertTrue(actualStartedJobs.stream().allMatch(j -> STARTED.equals(j.getStatus())));
     assertTrue(actualPendingJobs.stream().allMatch(j -> PENDING.equals(j.getStatus())));
@@ -167,8 +162,15 @@ public class JobIT extends FacadeIT {
     JobsApi api = new JobsApi(adminClient);
 
     Job actual = api.getJob(JOB_1_ID);
+    List<AnnotationNumberPerLabel> actualAnnotationStatistics =
+        api.getJobLatestAnnotationStatistics(JOB_1_ID);
 
     assertEquals(job1AsAdminView(), actual);
+    assertEquals(
+        List.of(
+            new AnnotationNumberPerLabel().labelName("POOL").numberOfAnnotations(1L),
+            new AnnotationNumberPerLabel().labelName("VELUX").numberOfAnnotations(1L)),
+        actualAnnotationStatistics);
   }
 
   @Test
@@ -312,8 +314,7 @@ public class JobIT extends FacadeIT {
                 .totalTasks(0L)
                 .completedTasksByUserId(0L)
                 .remainingTasks(0L)
-                .remainingTasksForUserId(0L))
-        .annotationStatistics(labels.stream().map(JobIT::initAnnotationNumberFrom).toList());
+                .remainingTasksForUserId(0L));
   }
 
   CrupdateJob from(Job job) {
@@ -335,18 +336,5 @@ public class JobIT extends FacadeIT {
     Job job1 = job1();
     job1.setTaskStatistics(job1.getTaskStatistics().remainingTasksForUserId(9L));
     return job1;
-  }
-
-  Job job1AsRestListComponentAsAdminView() {
-    Job job1 = job1();
-    job1.setTaskStatistics(job1.getTaskStatistics().remainingTasksForUserId(9L));
-    job1.setAnnotationStatistics(List.of());
-    return job1;
-  }
-
-  Job job9AsRestListComponentAsAdminView() {
-    Job job9 = job9();
-    job9.setAnnotationStatistics(List.of());
-    return job9;
   }
 }

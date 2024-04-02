@@ -176,6 +176,26 @@ paths:
                 $ref: '#/components/schemas/Job'
         '500':
           $ref: '#/components/responses/500'
+  '/jobs/{jobId}/annotationStatistics':
+    get:
+      tags:
+        - Jobs
+      operationId: getJobLatestAnnotationStatistics
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The created or updated job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnotationStatistics'
+        '500':
+          $ref: '#/components/responses/500'
   '/jobs/{jobId}/export':
       get:
         tags:
@@ -1089,10 +1109,6 @@ components:
       properties:
         taskStatistics:
           $ref: "#/components/schemas/TaskStatistics"
-        annotationStatistics:
-          type: array
-          items:
-            $ref: "#/components/schemas/AnnotationNumberPerLabel"
     JobStatus:
       type: string
       enum:
@@ -1135,6 +1151,10 @@ components:
         numberOfAnnotations:
           type: integer
           format: int64
+    AnnotationStatistics:
+      type: array
+      items:
+        $ref: "#/components/schemas/AnnotationNumberPerLabel"
     Task:
       type: object
       allOf:

@@ -112,6 +112,8 @@ public class SecurityConf {
                     .hasRole(ADMIN.getRole())
                     .requestMatchers(PUT, "/jobs/*")
                     .hasRole(ADMIN.getRole())
+                    .requestMatchers(GET, "/jobs/*/annotationStatistics")
+                    .hasRole(ADMIN.getRole())
                     .requestMatchers(GET, "/jobs/*/export")
                     .hasRole(ADMIN.getRole())
                     .requestMatchers(GET, "/jobs/*/tasks")

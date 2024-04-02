@@ -6,6 +6,7 @@ import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 
 import api.bpartners.annotator.endpoint.rest.controller.mapper.JobMapper;
 import api.bpartners.annotator.endpoint.rest.controller.mapper.JobStatusMapper;
+import api.bpartners.annotator.endpoint.rest.model.AnnotationNumberPerLabel;
 import api.bpartners.annotator.endpoint.rest.model.CrupdateAnnotatedJob;
 import api.bpartners.annotator.endpoint.rest.model.CrupdateJob;
 import api.bpartners.annotator.endpoint.rest.model.ExportFormat;
@@ -16,6 +17,7 @@ import api.bpartners.annotator.endpoint.rest.validator.CrupdateAnnotatedJobIdVal
 import api.bpartners.annotator.endpoint.rest.validator.CrupdateJobIdValidator;
 import api.bpartners.annotator.model.BoundedPageSize;
 import api.bpartners.annotator.model.PageFromOne;
+import api.bpartners.annotator.service.AnnotationBatchService;
 import api.bpartners.annotator.service.JobExport.ExportService;
 import api.bpartners.annotator.service.JobService;
 import java.util.List;
@@ -38,6 +40,7 @@ public class JobController {
   private final ExportService exportService;
   private final CrupdateJobIdValidator crupdateJobIdValidator;
   private final CrupdateAnnotatedJobIdValidator annotatedJobIdValidator;
+  private final AnnotationBatchService annotationBatchService;
 
   @GetMapping("/jobs")
   public List<Job> getJobs(
@@ -49,13 +52,19 @@ public class JobController {
     return service
         .getAllByStatusAndName(page, pageSize, type, statusMapper.toDomain(status), name)
         .stream()
-        .map(mapper::toRestListComponent)
+        .map(mapper::toRest)
         .toList();
   }
 
   @GetMapping("/jobs/{jobId}")
   public Job getJob(@PathVariable String jobId) {
     return mapper.toRest(service.getById(jobId));
+  }
+
+  @GetMapping("/jobs/{jobId}/annotationStatistics")
+  public List<AnnotationNumberPerLabel> getJobLatestAnnotationStatistics(@PathVariable String jobId) {
+    var domain = service.getById(jobId);
+    return annotationBatchService.getLatestAnnotationStatistics(domain);
   }
 
   @PutMapping("/jobs/{jobId}")
