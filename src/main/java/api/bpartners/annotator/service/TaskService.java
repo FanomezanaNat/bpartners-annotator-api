@@ -15,7 +15,6 @@ import api.bpartners.annotator.repository.model.Job;
 import api.bpartners.annotator.repository.model.Task;
 import api.bpartners.annotator.repository.model.User;
 import api.bpartners.annotator.repository.model.enums.TaskStatus;
-import api.bpartners.annotator.service.aws.JobOrTaskS3Service;
 import api.bpartners.annotator.service.validator.TaskUpdateValidator;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +33,6 @@ public class TaskService {
   private final TaskDao taskDao;
   private final TaskUpdateValidator updateValidator;
   private final UserService userService;
-  private final JobOrTaskS3Service jobOrTaskS3Service;
 
   public List<Task> getAllByJobAndStatus(
       String jobId, TaskStatus status, String userId, PageFromOne page, BoundedPageSize pageSize) {
