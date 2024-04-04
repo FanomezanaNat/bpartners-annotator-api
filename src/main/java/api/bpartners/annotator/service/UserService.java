@@ -90,7 +90,7 @@ public class UserService {
     return repository.save(toUpdate);
   }
 
-  public List<User> getGeoJobsUsersWithoutCaringAboutTeam() {
+  public List<User> getAllGeoJobsUsers() {
     // THIS COMPLETELY IGNORES TEAMID
     return List.of(getById(geoJobsUserInfo.get("userId")));
   }

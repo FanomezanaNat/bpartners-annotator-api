@@ -89,8 +89,9 @@ public class Job {
   }
 
   @JsonIgnore
-  public TaskStatistics getTaskStatistics(String userId) {
+  public TaskStatistics getTaskStatistics(String userId, List<String> externalAnnotatorUserId) {
     assert (userId != null) : "UserId value missing.";
+    assert (externalAnnotatorUserId != null) : "externalAnnotatorUserId value missing.";
     List<Task> thisTasks = getTasks();
     long size = thisTasks.size();
     AtomicLong tasksCompletedByUserId = new AtomicLong(0);
@@ -107,7 +108,8 @@ public class Job {
           } else {
             if (!task.isToReview()) {
               remainingTasksNumber.incrementAndGet();
-              if (task.getUserId() == null || userId.equals(task.getUserId())) {
+              String jobUserId = task.getUserId();
+              if (jobUserId == null || userId.equals(jobUserId) || externalAnnotatorUserId.contains(jobUserId)) {
                 remainingTasksForUserId.incrementAndGet();
               }
             }

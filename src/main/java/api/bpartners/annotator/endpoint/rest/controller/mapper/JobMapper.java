@@ -6,7 +6,8 @@ import api.bpartners.annotator.endpoint.rest.model.Job;
 import api.bpartners.annotator.endpoint.rest.security.AuthenticatedResourceProvider;
 import api.bpartners.annotator.endpoint.rest.validator.CrupdateAnnotatedJobValidator;
 import api.bpartners.annotator.endpoint.rest.validator.JobValidator;
-import api.bpartners.annotator.service.AnnotationBatchService;
+import api.bpartners.annotator.repository.model.User;
+import api.bpartners.annotator.service.UserService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,9 +20,10 @@ public class JobMapper {
   private final JobValidator validator;
   private final AuthenticatedResourceProvider authenticatedResourceProvider;
   private final CrupdateAnnotatedJobValidator crupdateAnnotatedJobValidator;
-  private final AnnotationBatchService annotationBatchService;
+  private final UserService userService;
 
   public Job toRest(api.bpartners.annotator.repository.model.Job domain) {
+    var geoJobsUserIds = userService.getAllGeoJobsUsers().stream().map(User::getId).toList();
     String connectedUserId = authenticatedResourceProvider.getAuthenticatedUser().getId();
     return new Job()
         .id(domain.getId())
@@ -35,7 +37,7 @@ public class JobMapper {
         .type(domain.getType())
         .imagesHeight(domain.getImagesHeight())
         .imagesWidth(domain.getImagesWidth())
-        .taskStatistics(domain.getTaskStatistics(connectedUserId));
+        .taskStatistics(domain.getTaskStatistics(connectedUserId, geoJobsUserIds));
   }
 
   public api.bpartners.annotator.repository.model.Job toDomain(CrupdateJob rest) {

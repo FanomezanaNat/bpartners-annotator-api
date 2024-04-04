@@ -80,7 +80,7 @@ public class AnnotationBatchService {
   public List<AnnotationBatch> findAllByInterExternalAnnotatorIdAndTask(
       String annotatorId, String taskId, PageFromOne page, BoundedPageSize pageSize) {
     List<String> geoJobUsers =
-        userService.getGeoJobsUsersWithoutCaringAboutTeam().stream()
+        userService.getAllGeoJobsUsers().stream()
             .map(User::getId)
             .collect(toCollection(ArrayList::new));
     geoJobUsers.add(annotatorId);
@@ -106,7 +106,7 @@ public class AnnotationBatchService {
   public AnnotationBatch findByInterExternalAnnotatorIdAndTaskIdAndId(
       String annotatorId, String taskId, String id) {
     List<String> geoJobUsers =
-        userService.getGeoJobsUsersWithoutCaringAboutTeam().stream()
+        userService.getAllGeoJobsUsers().stream()
             .map(User::getId)
             .collect(toCollection(ArrayList::new));
     geoJobUsers.add(annotatorId);
