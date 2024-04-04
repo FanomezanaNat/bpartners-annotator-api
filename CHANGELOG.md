@@ -1,3 +1,39 @@
+# [2.5.0](https://github.com/b-partners/bpartners-annotator-api/compare/v2.4.1...v2.5.0) (2024-04-04)
+
+
+### Bug Fixes
+
+* Annotation is not nullable ([cbf37eb](https://github.com/b-partners/bpartners-annotator-api/commit/cbf37eb420d582d7ff60842b751426df95a60b9f))
+* Annotation.Polygon could not be deserialized ([38d2259](https://github.com/b-partners/bpartners-annotator-api/commit/38d2259b7d866a91945d5a2ac99289365da2c474))
+* correct api link ([47f8065](https://github.com/b-partners/bpartners-annotator-api/commit/47f806545ae5c7a1768c376eb6250dca79b99b98))
+* correct enum array type for user_role ([c03d94e](https://github.com/b-partners/bpartners-annotator-api/commit/c03d94e08db34d4aff5c2bd672cd64431bff6754))
+* do not compute jobs annotation statistics on findAll, only on getById ([a5550c7](https://github.com/b-partners/bpartners-annotator-api/commit/a5550c7bff80e95fbeb3999c8ed308ff6d5d813a))
+* drop size, height, width cols from task and add height and width to job set to 1024, 1024 for null columns ([1839d1f](https://github.com/b-partners/bpartners-annotator-api/commit/1839d1f4ad02fee5dcbbabf2e4ad13c7f329c08e))
+* missing creation timestamp mapping in AnnotationBatchMapper ([8d83512](https://github.com/b-partners/bpartners-annotator-api/commit/8d835126bdf034d398de5e428119212f51110df9))
+* missing Transaction on JobExportInitiatedService and missing BoundingBox in CocoExportService ([c003c7f](https://github.com/b-partners/bpartners-annotator-api/commit/c003c7fba753bff91547a0acd505e400d173bb97))
+* only completed job cannot fail ([61b5eb6](https://github.com/b-partners/bpartners-annotator-api/commit/61b5eb60e5d16b6af5c46e4c3c0bf4d253d536ce))
+* remainingTaskForUserId considers geojobsUsers ([95b1a28](https://github.com/b-partners/bpartners-annotator-api/commit/95b1a2850003f4ac25cdd3a7fed7d3ac274a10fc))
+
+
+### Features
+
+* add width, height, size to task for internal use during export ([3a26a4e](https://github.com/b-partners/bpartners-annotator-api/commit/3a26a4e00fffa8da2542fd67c2529fa8e516eda5))
+* annotators can get tasks assigned to geo-jobs annotators from their jobs ([8c9b4c7](https://github.com/b-partners/bpartners-annotator-api/commit/8c9b4c7c409640d29c0017f728cc6a93dff50720))
+* annotators can read annotations made by self or by geo-jobs ([72562c3](https://github.com/b-partners/bpartners-annotator-api/commit/72562c3778fa1dcbae024f1dfed33f051bac5b70))
+* asynchronous job export ([d4b0aef](https://github.com/b-partners/bpartners-annotator-api/commit/d4b0aef505c98c5cb1bd3d626e8f59eccdc4a48c))
+* cc exported job to a specific configurable email ([bb8b0a0](https://github.com/b-partners/bpartners-annotator-api/commit/bb8b0a016d5e878f9a6bbc8340e5fe83b94f0729))
+* compute latest annotation statistics by job ([fc39178](https://github.com/b-partners/bpartners-annotator-api/commit/fc391781392c4f9529dc62332f75b47ab5a0506d))
+* export job to coco format, and separate JobExportService into multiple classes from service.jobExport package ([aa39c7b](https://github.com/b-partners/bpartners-annotator-api/commit/aa39c7b554d84c0a2e35e1f9185aec24f40ed522))
+* filter jobs by name and type ([c2ac97c](https://github.com/b-partners/bpartners-annotator-api/commit/c2ac97cccedaba8bc23169b69cb4f4338c373e57))
+* send email and set job to ready after tasks and annotations creation finished following c0199c0 ([a1a6c2d](https://github.com/b-partners/bpartners-annotator-api/commit/a1a6c2d770676038642ff17f85b1c05b228b108e))
+
+
+### Reverts
+
+* Revert "chore: revert if COCO model is needed" ([cf7ec0f](https://github.com/b-partners/bpartners-annotator-api/commit/cf7ec0f90c7ae75753470b7934865b7d2450c0af))
+
+
+
 ## [2.4.1](https://github.com/b-partners/bpartners-annotator-api/compare/v2.4.0...v2.4.1) (2024-02-02)
 
 
@@ -129,20 +165,6 @@
 ### Bug Fixes
 
 * imageUri instead of imageURI ([4b08d2b](https://github.com/b-partners/bpartners-annotator-api/commit/4b08d2b7a18a024770f9dfb02d9f0bfac0f6de81))
-
-
-
-# [0.8.0](https://github.com/b-partners/bpartners-annotator-api/compare/v0.7.1...v0.8.0) (2023-11-23)
-
-
-### Bug Fixes
-
-* userId is null when getting new task ([32e4aef](https://github.com/b-partners/bpartners-annotator-api/commit/32e4aefe6c5cb0045ac6b112647426a8837b65cd))
-
-
-### Features
-
-* add task statistics ([#65](https://github.com/b-partners/bpartners-annotator-api/issues/65)) ([8af1ecc](https://github.com/b-partners/bpartners-annotator-api/commit/8af1eccb02ebb207ba532823e8efb95af3bbfa22))
 
 
 
