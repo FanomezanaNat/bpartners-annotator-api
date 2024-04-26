@@ -5,7 +5,10 @@ import static java.lang.Double.MIN_VALUE;
 import static org.hibernate.type.SqlTypes.JSON;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +27,7 @@ public class Annotation implements Serializable {
   @Id private String id;
   private String taskId;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne
   @JoinColumn(name = "label_id", updatable = false)
   @NotNull
   private Label label;
