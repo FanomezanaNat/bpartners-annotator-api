@@ -1,3 +1,12 @@
+# [2.6.0](https://github.com/b-partners/bpartners-annotator-api/compare/v2.5.0...v2.6.0) (2024-04-30)
+
+
+### Features
+
+* synchronous separated annotated task saving ([09f3d7e](https://github.com/b-partners/bpartners-annotator-api/commit/09f3d7e888162fd3dd433eb7417555820c8f36f5))
+
+
+
 # [2.5.0](https://github.com/b-partners/bpartners-annotator-api/compare/v2.4.1...v2.5.0) (2024-04-04)
 
 
@@ -156,15 +165,6 @@
 ### Features
 
 * job has TaskStatistics ([eddc2a9](https://github.com/b-partners/bpartners-annotator-api/commit/eddc2a90c92665b89456039f4a0a36ed7ed5df8e))
-
-
-
-## [0.8.1](https://github.com/b-partners/bpartners-annotator-api/compare/v0.8.0...v0.8.1) (2023-11-23)
-
-
-### Bug Fixes
-
-* imageUri instead of imageURI ([4b08d2b](https://github.com/b-partners/bpartners-annotator-api/commit/4b08d2b7a18a024770f9dfb02d9f0bfac0f6de81))
 
 
 
