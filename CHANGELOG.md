@@ -1,3 +1,18 @@
+# [2.7.0](https://github.com/b-partners/bpartners-annotator-api/compare/v2.6.0...v2.7.0) (2024-05-07)
+
+
+### Bug Fixes
+
+* bad naming for annotation endpoint ([c9b1849](https://github.com/b-partners/bpartners-annotator-api/commit/c9b184951daa78db92c251645626153d54767d0b))
+
+
+### Features
+
+* add creation datetime attribute to AnnotationBatchReview ([07ccf5f](https://github.com/b-partners/bpartners-annotator-api/commit/07ccf5f7d335e3c8f6a19f8281a2839e35b8414e))
+* asynchronous mail for computed annotation statistics ([fc8bfe7](https://github.com/b-partners/bpartners-annotator-api/commit/fc8bfe7019cda71ad5c56a5a09c402e9be84ae5c))
+
+
+
 # [2.6.0](https://github.com/b-partners/bpartners-annotator-api/compare/v2.5.0...v2.6.0) (2024-04-30)
 
 
@@ -151,20 +166,6 @@
 ### Features
 
 * implement update user team endpoint ([605550f](https://github.com/b-partners/bpartners-annotator-api/commit/605550fabf3baef0d46ea5cec7e65e4d1cec69b0))
-
-
-
-# [0.9.0](https://github.com/b-partners/bpartners-annotator-api/compare/v0.8.1...v0.9.0) (2023-11-23)
-
-
-### Bug Fixes
-
-* map imageUri correctly ([dc3e324](https://github.com/b-partners/bpartners-annotator-api/commit/dc3e3245cf2d210cb788a6b1b9a60b4d6df66c83))
-
-
-### Features
-
-* job has TaskStatistics ([eddc2a9](https://github.com/b-partners/bpartners-annotator-api/commit/eddc2a90c92665b89456039f4a0a36ed7ed5df8e))
 
 
 
