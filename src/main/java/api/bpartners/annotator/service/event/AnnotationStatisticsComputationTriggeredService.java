@@ -38,8 +38,8 @@ public class AnnotationStatisticsComputationTriggeredService
   @Transactional
   public void accept(
       AnnotationStatisticsComputationTriggered annotationStatisticsComputationTriggered) {
-    Job linkedJob = jobService.getById(annotationStatisticsComputationTriggered.jobId());
-    InternetAddress cc = annotationStatisticsComputationTriggered.emailCC();
+    Job linkedJob = jobService.getById(annotationStatisticsComputationTriggered.getJobId());
+    InternetAddress cc = annotationStatisticsComputationTriggered.getEmailCC();
     String subject = "[Bpartners-Annotator] Calcul de statistiques de job";
     String htmlBody =
         parseTemplateResolver("job_statistics_computation_finished", configureContext(linkedJob));
