@@ -35,6 +35,7 @@ public class AnnotationMapper {
         .userId(rest.getUserId())
         .batchId(annotationBatchId)
         .polygon(polygonMapper.toDomain(rest.getPolygon()))
+        .comment(rest.getComment())
         .build();
   }
 
