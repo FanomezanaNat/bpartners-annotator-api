@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class UserTeamUpdatedTest {
   @Test
   void get_attributes_ok() {
-    var event = new UserUpserted();
+    var event = new UserTeamUpdated();
 
     assertEquals(Duration.ofMinutes(1), event.maxConsumerDuration());
     assertEquals(Duration.ofMinutes(1), event.maxConsumerBackoffBetweenRetries());
