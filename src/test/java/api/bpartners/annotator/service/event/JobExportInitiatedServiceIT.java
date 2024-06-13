@@ -21,6 +21,7 @@ import api.bpartners.annotator.mail.Mailer;
 import api.bpartners.annotator.model.exception.BadRequestException;
 import api.bpartners.annotator.repository.model.Job;
 import api.bpartners.annotator.service.AnnotationBatchService;
+import api.bpartners.annotator.service.JobService;
 import jakarta.mail.internet.InternetAddress;
 import java.io.File;
 import java.util.List;
@@ -38,6 +39,7 @@ class JobExportInitiatedServiceIT extends FacadeIT {
   @MockBean private Mailer mailerMock;
   @MockBean private AnnotationBatchService annotationBatchServiceMock;
   @MockBean private FileWriter fileWriter;
+  @MockBean private JobService jobService;
 
   private static @NotNull String getHtmlBody(Job job) {
     return "<!DOCTYPE html>\n"
@@ -76,6 +78,8 @@ class JobExportInitiatedServiceIT extends FacadeIT {
         .thenReturn(List.of(aTestAnnotationBatch()));
     when(fileWriter.write(any(), any(), any())).thenReturn(mockFile);
     when(fileWriter.apply(any(), any())).thenReturn(mockFile);
+    when(jobService.getById(COCO_JOB_ID)).thenReturn(aTestJob(COCO_JOB_ID));
+    when(jobService.getById(VGG_JOB_ID)).thenReturn(aTestJob(VGG_JOB_ID));
   }
 
   private @NotNull File getMockFile() {
@@ -91,7 +95,7 @@ class JobExportInitiatedServiceIT extends FacadeIT {
     Job linkedJob = aTestJob(COCO_JOB_ID);
     String mailSubject = "[Bpartners-Annotator] Exportation de job sous format " + exportFormat;
 
-    subject.accept(new JobExportInitiated(linkedJob, exportFormat, cc));
+    subject.accept(new JobExportInitiated(linkedJob.getId(), exportFormat, cc));
 
     // verify(byteWriter.apply());
     verify(mailerMock, times(1))
@@ -112,7 +116,7 @@ class JobExportInitiatedServiceIT extends FacadeIT {
     Job linkedJob = aTestJob(VGG_JOB_ID);
     String mailSubject = "[Bpartners-Annotator] Exportation de job sous format " + exportFormat;
 
-    subject.accept(new JobExportInitiated(linkedJob, exportFormat, cc));
+    subject.accept(new JobExportInitiated(linkedJob.getId(), exportFormat, cc));
 
     verify(mailerMock, times(1))
         .accept(
@@ -133,7 +137,7 @@ class JobExportInitiatedServiceIT extends FacadeIT {
 
     assertThrows(
         BadRequestException.class,
-        () -> subject.accept(new JobExportInitiated(linkedJob, invalidExportFormat, cc)),
+        () -> subject.accept(new JobExportInitiated(linkedJob.getId(), invalidExportFormat, cc)),
         "unknown export format " + invalidExportFormat);
   }
 }

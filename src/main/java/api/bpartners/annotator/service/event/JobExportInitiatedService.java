@@ -10,6 +10,7 @@ import api.bpartners.annotator.mail.Email;
 import api.bpartners.annotator.mail.Mailer;
 import api.bpartners.annotator.repository.model.Job;
 import api.bpartners.annotator.service.JobExport.ExportService;
+import api.bpartners.annotator.service.JobService;
 import api.bpartners.annotator.service.utils.ByteWriter;
 import jakarta.mail.internet.InternetAddress;
 import java.io.File;
@@ -30,11 +31,12 @@ public class JobExportInitiatedService implements Consumer<JobExportInitiated> {
   private final ExportService exportService;
   private final ByteWriter byteWriter;
   private final FileWriter fileWriter;
+  private final JobService jobService;
 
   @Override
   @Transactional
   public void accept(JobExportInitiated jobExportInitiated) {
-    Job linkedJob = jobExportInitiated.getJob();
+    Job linkedJob = jobService.getById(jobExportInitiated.getJobId());
     ExportFormat exportFormat = jobExportInitiated.getExportFormat();
     InternetAddress cc = jobExportInitiated.getEmailCC();
     var exported = exportService.exportJob(linkedJob, exportFormat);

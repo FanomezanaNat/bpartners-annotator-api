@@ -51,7 +51,7 @@ class ExportServiceIT extends FacadeIT {
 
     verify(eventProducerMock)
         .accept(
-            List.of(new JobExportInitiated(TEST_JOB, exportFormat, getInternetAddress(testMail))));
+            List.of(new JobExportInitiated(TEST_JOB.getId(), exportFormat, getInternetAddress(testMail))));
   }
 
   @Test

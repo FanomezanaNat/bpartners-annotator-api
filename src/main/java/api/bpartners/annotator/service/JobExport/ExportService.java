@@ -29,9 +29,8 @@ public class ExportService {
 
   @SneakyThrows
   public void initiateJobExport(String jobId, ExportFormat exportFormat, String emailCC) {
-    var linkedJob = jobService.getById(jobId);
     eventProducer.accept(
-        List.of(new JobExportInitiated(linkedJob, exportFormat, new InternetAddress(emailCC))));
+        List.of(new JobExportInitiated(jobId, exportFormat, new InternetAddress(emailCC))));
   }
 
   @Transactional(propagation = REQUIRED, readOnly = true, rollbackFor = Exception.class)

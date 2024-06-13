@@ -1,7 +1,6 @@
 package api.bpartners.annotator.endpoint.event.model;
 
 import api.bpartners.annotator.endpoint.rest.model.ExportFormat;
-import api.bpartners.annotator.repository.model.Job;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.mail.internet.InternetAddress;
 import java.time.Duration;
@@ -21,8 +20,8 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class JobExportInitiated extends PojaEvent {
-  @JsonProperty("job")
-  private Job job;
+  @JsonProperty("job_id")
+  private String jobId;
 
   @JsonProperty("exportFormat")
   private ExportFormat exportFormat;
