@@ -10,7 +10,7 @@ class JobExportInitiatedTest {
   void get_attributes_ok() {
     var event = new JobExportInitiated();
 
-    assertEquals(Duration.ofMinutes(10), event.maxConsumerDuration());
+    assertEquals(Duration.ofMinutes(30), event.maxConsumerDuration());
     assertEquals(Duration.ofMinutes(1), event.maxConsumerBackoffBetweenRetries());
   }
 }
