@@ -85,7 +85,7 @@ class JobExportInitiatedServiceIT extends FacadeIT {
     when(jobService.getById(COCO_JOB_ID)).thenReturn(aTestJob(COCO_JOB_ID));
     when(jobService.getById(VGG_JOB_ID)).thenReturn(aTestJob(VGG_JOB_ID));
     when(annotationBatchSubsetServiceMock.getSubSetById(any())).thenReturn(mockSubset());
-    when(annotationBatchSubsetServiceMock.save(any())).thenReturn(mockSubset());
+    when(annotationBatchSubsetServiceMock.saveAll(any())).thenReturn(List.of(mockSubset()));
   }
 
   private @NotNull File getMockFile() {

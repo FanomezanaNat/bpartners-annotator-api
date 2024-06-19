@@ -45,7 +45,7 @@ class ExportServiceIT extends FacadeIT {
     when(annotationBatchServiceMock.findLatestPerTaskByJobId(MOCK_JOB_ID))
         .thenReturn(List.of(aTestAnnotationBatch()));
     when(annotationBatchSubsetServiceMock.getSubSetById(any())).thenReturn(mockSubset());
-    when(annotationBatchSubsetServiceMock.save(any())).thenReturn(mockSubset());
+    when(annotationBatchSubsetServiceMock.saveAll(any())).thenReturn(List.of(mockSubset()));
   }
 
   @Test
