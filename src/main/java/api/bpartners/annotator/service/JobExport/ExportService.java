@@ -1,20 +1,19 @@
 package api.bpartners.annotator.service.JobExport;
 
+import static java.util.UUID.randomUUID;
 import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 
 import api.bpartners.annotator.endpoint.event.EventProducer;
 import api.bpartners.annotator.endpoint.event.model.JobExportInitiated;
+import api.bpartners.annotator.endpoint.rest.controller.mapper.InternetAddressMapper;
 import api.bpartners.annotator.endpoint.rest.model.ExportFormat;
 import api.bpartners.annotator.model.exception.BadRequestException;
-import api.bpartners.annotator.repository.model.AnnotationBatch;
+import api.bpartners.annotator.repository.model.AnnotationBatchSubset;
 import api.bpartners.annotator.repository.model.Job;
 import api.bpartners.annotator.service.AnnotationBatchService;
-import api.bpartners.annotator.service.JobService;
-import jakarta.mail.internet.InternetAddress;
-import java.util.ArrayList;
+import api.bpartners.annotator.service.AnnotationBatchSubsetService;
+import com.google.common.collect.Lists;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -23,39 +22,40 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @AllArgsConstructor
 public class ExportService {
+  private static final int PARTITION_SIZE = 500;
+  private static final int MAX_HANDLED_BATCH_SIZE = 1000;
   private final EventProducer eventProducer;
-  private final JobService jobService;
   private final VggExportService vggExportService;
   private final CocoExportService cocoExportService;
   private final AnnotationBatchService annotationBatchService;
+  private final AnnotationBatchSubsetService annotationBatchSubsetService;
 
   @SneakyThrows
   public void initiateJobExport(String jobId, ExportFormat exportFormat, String emailCC) {
-    eventProducer.accept(
-        List.of(new JobExportInitiated(jobId, exportFormat, new InternetAddress(emailCC))));
+    var batches = annotationBatchService.findLatestPerTaskByJobId(jobId);
+    var subSets =
+        batches.size() > MAX_HANDLED_BATCH_SIZE
+            ? Lists.partition(batches, PARTITION_SIZE)
+            : List.of(batches);
+    subSets.forEach(
+        subset -> {
+          var saved =
+              annotationBatchSubsetService.save(
+                  new AnnotationBatchSubset(randomUUID().toString(), jobId, subset));
+          eventProducer.accept(
+              List.of(
+                  new JobExportInitiated(
+                      jobId, saved.getId(), exportFormat, InternetAddressMapper.from(emailCC))));
+        });
   }
 
   @Transactional(propagation = REQUIRED, readOnly = true, rollbackFor = Exception.class)
-  public List<Object> exportJob(Job job, ExportFormat format) {
-    var batches = annotationBatchService.findLatestPerTaskByJobId(job.getId());
-    var subBatches = partition(batches);
+  public Object exportJob(Job job, ExportFormat format, String subsetId) {
+    var subset = annotationBatchSubsetService.getSubSetById(subsetId);
     return switch (format) {
-      case VGG -> subBatches.parallelStream()
-          .filter(batch -> !batch.isEmpty())
-          .map(batch -> vggExportService.export(job, batch))
-          .collect(Collectors.toUnmodifiableList());
-      case COCO -> subBatches.parallelStream()
-          .filter(batch -> !batch.isEmpty())
-          .map(batch -> cocoExportService.export(job, batch))
-          .collect(Collectors.toUnmodifiableList());
+      case VGG -> vggExportService.export(job, subset.getBatches());
+      case COCO -> cocoExportService.export(job, subset.getBatches());
       case null -> throw new BadRequestException("unknown export format " + format);
     };
-  }
-
-  private List<List<AnnotationBatch>> partition(List<AnnotationBatch> batches) {
-    int middleIndex = batches.size() / 2;
-    Map<Boolean, List<AnnotationBatch>> groups =
-        batches.stream().collect(Collectors.partitioningBy(s -> batches.indexOf(s) >= middleIndex));
-    return new ArrayList<>(groups.values());
   }
 }
