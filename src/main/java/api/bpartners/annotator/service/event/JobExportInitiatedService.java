@@ -39,12 +39,9 @@ public class JobExportInitiatedService implements Consumer<JobExportInitiated> {
     Job linkedJob = jobService.getById(jobExportInitiated.getJobId());
     ExportFormat exportFormat = jobExportInitiated.getExportFormat();
     InternetAddress cc = jobExportInitiated.getEmailCC();
-    String subsetId = jobExportInitiated.getSubSetId();
-    var exported = exportService.exportJob(linkedJob, exportFormat, subsetId);
-    var exportedAsBytes = byteWriter.apply(exported);
-    var filename = linkedJob.getName() + subsetId;
-    var inFile =
-        fileWriter.write(exportedAsBytes, createTempDirectory(), filename + JSON_FILE_EXTENSION);
+    // Require improvement to handle the list of object
+    List<Object> exported = exportService.exportJob(linkedJob, exportFormat);
+    var files = writeAsFiles(linkedJob, exported);
     String subject = "[Bpartners-Annotator] Exportation de job sous format " + exportFormat;
     String htmlBody = parseTemplateResolver("job_export_finished", configureContext(linkedJob));
 
@@ -55,7 +52,21 @@ public class JobExportInitiatedService implements Consumer<JobExportInitiated> {
             List.of(),
             subject,
             htmlBody,
-            List.of(inFile)));
+            files));
+  }
+
+  @SneakyThrows
+  private List<File> writeAsFiles(Job linkedJob, List<Object> annotations) {
+    return annotations.parallelStream()
+        .map(
+            annotation -> {
+              var annotationBytes = byteWriter.apply(annotation);
+              return fileWriter.write(
+                  annotationBytes,
+                  createTempDirectory(),
+                  linkedJob.getName() + JSON_FILE_EXTENSION);
+            })
+        .toList();
   }
 
   @SneakyThrows

@@ -1,8 +1,6 @@
 package api.bpartners.annotator.repository.model;
 
-import static jakarta.persistence.CascadeType.ALL;
-
-import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -31,10 +29,7 @@ public class AnnotationBatch {
 
   private String annotatorId;
 
-  @Column(name = "subset_id")
-  private String subsetId;
-
-  @OneToMany(mappedBy = "batchId", cascade = ALL)
+  @OneToMany(mappedBy = "batchId", cascade = CascadeType.ALL)
   private List<Annotation> annotations;
 
   public List<Annotation> getAnnotations() {
