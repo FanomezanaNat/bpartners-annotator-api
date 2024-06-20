@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @AllArgsConstructor
 public class ExportService {
-  private static final int PARTITION_SIZE = 200;
-  private static final int MAX_HANDLED_BATCH_SIZE = 200;
+  private static final int PARTITION_SIZE = 500;
+  private static final int MAX_HANDLED_BATCH_SIZE = 1000;
   private final EventProducer eventProducer;
   private final VggExportService vggExportService;
   private final CocoExportService cocoExportService;
@@ -37,18 +37,15 @@ public class ExportService {
         batches.size() > MAX_HANDLED_BATCH_SIZE
             ? Lists.partition(batches, PARTITION_SIZE)
             : List.of(batches);
-    var toSave =
-        subSets.stream()
-            .map(subset -> new AnnotationBatchSubset(randomUUID().toString(), jobId, subset))
-            .toList();
-    var saved = annotationBatchSubsetService.saveAll(toSave);
-
-    saved.forEach(
+    subSets.forEach(
         subset -> {
+          var saved =
+              annotationBatchSubsetService.save(
+                  new AnnotationBatchSubset(randomUUID().toString(), jobId, subset));
           eventProducer.accept(
               List.of(
                   new JobExportInitiated(
-                      jobId, subset.getId(), exportFormat, InternetAddressMapper.from(emailCC))));
+                      jobId, saved.getId(), exportFormat, InternetAddressMapper.from(emailCC))));
         });
   }
 
