@@ -19,6 +19,22 @@ public class AnnotationBatchSubsetService {
   }
 
   public List<AnnotationBatchSubset> saveAll(List<AnnotationBatchSubset> subsets) {
-    return repository.saveAll(subsets);
+    var toSave =
+        subsets.stream()
+            .peek(
+                subset -> {
+                  var batches =
+                      subset.getBatches().stream()
+                          .peek(batch -> batch.setSubsetId(subset.getId()))
+                          .toList();
+                  subset.setBatches(batches);
+                })
+            .toList();
+    return repository.saveAll(toSave);
+  }
+
+  private AnnotationBatchSubset save(AnnotationBatchSubset toSave) {
+
+    return repository.save(toSave);
   }
 }
