@@ -40,12 +40,12 @@ public class JobExportInitiatedService implements Consumer<JobExportInitiated> {
     var batches = annotationBatchService.findLatestPerTaskByJobId(jobId);
     log.info("Found {} batches", batches.size());
     List<List<AnnotationBatch>> subBatches = split(batches);
-    var savedTasks = createTasks(jobId, subBatches);
-    log.info("will create {} events", savedTasks.size());
+    log.info("will create {} events", subBatches.getFirst().size());
+    /*var savedTasks = createTasks(jobId, subBatches);
     savedTasks.forEach(
         task ->
             eventProducer.accept(
-                List.of(new ExportTaskCreated(jobId, task.getId(), format, emailCC))));
+                List.of(new ExportTaskCreated(jobId, task.getId(), format, emailCC))));*/
   }
 
   private List<List<AnnotationBatch>> split(List<AnnotationBatch> batches) {
