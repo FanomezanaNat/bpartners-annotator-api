@@ -28,7 +28,10 @@ public class VggExportService {
   private static VGG.Annotation toVggAnnotation(AnnotationBatch batch) {
     var vggAnnotation = new VGG.Annotation();
     // <-- UNUSED_DATA put at default value
-    vggAnnotation.setFileAttributes(Map.of());
+    vggAnnotation.setFileAttributes(Map.of(
+      "creation_datetime", String.valueOf(batch.getCreationTimestamp()),
+      "batch_id", batch.getId()
+    ));
     vggAnnotation.setSize(null);
     vggAnnotation.setBase64ImageData(null);
     // UNUSED_DATA -->
