@@ -35,7 +35,7 @@ public class ExportService {
   }
 
   @Transactional(propagation = REQUIRED, readOnly = true, rollbackFor = Exception.class)
-  private Object exportJob(Job job, List<AnnotationBatch> batches, ExportFormat format) {
+  public Object exportJob(Job job, List<AnnotationBatch> batches, ExportFormat format) {
     return switch (format) {
       case VGG -> vggExportService.export(job, batches);
       case COCO -> cocoExportService.export(job, batches);

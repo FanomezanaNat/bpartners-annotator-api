@@ -34,6 +34,7 @@ public interface AnnotationBatchRepository extends JpaRepository<AnnotationBatch
     inner join job j1 on j1.id = t1.job_id
     where j1.id = :jobId
     group by a1.task_id
+    limit 1
     ) max_ct on max_ct.latest_creation_timestamp = a.creation_timestamp
     where j.id = :jobId
 """)
