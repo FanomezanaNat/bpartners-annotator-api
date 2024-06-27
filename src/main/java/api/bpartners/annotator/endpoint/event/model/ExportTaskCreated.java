@@ -19,9 +19,12 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode
 @ToString
-public class JobExportInitiated extends PojaEvent {
+public class ExportTaskCreated extends PojaEvent {
   @JsonProperty("job_id")
   private String jobId;
+
+  @JsonProperty("task_id")
+  private String taskId;
 
   @JsonProperty("export_format")
   private ExportFormat exportFormat;
