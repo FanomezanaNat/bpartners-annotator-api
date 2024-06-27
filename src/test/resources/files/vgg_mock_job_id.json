@@ -20,6 +20,9 @@
     },
     "fileref": null,
     "base64_img_data": null,
-    "file_attributes": {}
+    "file_attributes": {
+      "batch_id": "batch_id",
+      "creation_datetime": "-1000000000-01-01T00:00:00Z"
+    }
   }
 }
