@@ -24,8 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class JobExportInitiatedService implements Consumer<JobExportInitiated> {
   // TODO: put as env vars
-  private static final int BATCH_PARTITION_SIZE = 1000;
-  private static final int MAX_HANDLED_BATCH_SIZE = 1200;
+  private static final int BATCH_PARTITION_SIZE = 500;
   private final AnnotationBatchService annotationBatchService;
   private final ExportTaskService exportTaskService;
   private final EventProducer<ExportTaskCreated> eventProducer;
