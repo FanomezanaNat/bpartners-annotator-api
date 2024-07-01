@@ -81,7 +81,9 @@ public class SecurityConf {
                         new AntPathRequestMatcher("/health/bucket", GET.name()),
                         new AntPathRequestMatcher("/health/db", GET.name()),
                         new AntPathRequestMatcher("/health/email", GET.name()),
-                        new AntPathRequestMatcher("/health/event", GET.name())))),
+                        new AntPathRequestMatcher("/health/event1", GET.name()),
+                        new AntPathRequestMatcher("/health/event2", GET.name()),
+                        new AntPathRequestMatcher("/health/event/uuids", POST.name())))),
             AnonymousAuthenticationFilter.class)
         .authorizeHttpRequests(
             (authorize) ->
@@ -96,7 +98,11 @@ public class SecurityConf {
                     .permitAll()
                     .requestMatchers("/health/email")
                     .permitAll()
-                    .requestMatchers("/health/event")
+                    .requestMatchers("/health/event1")
+                    .permitAll()
+                    .requestMatchers("/health/event2")
+                    .permitAll()
+                    .requestMatchers(POST, "/health/event/uuids")
                     .permitAll()
                     .requestMatchers("/whoami")
                     .hasAnyRole(ADMIN.getRole(), ANNOTATOR.getRole())
