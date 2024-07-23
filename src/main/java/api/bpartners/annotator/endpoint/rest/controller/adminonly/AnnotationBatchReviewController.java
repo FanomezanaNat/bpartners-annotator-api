@@ -1,4 +1,4 @@
-package api.bpartners.annotator.endpoint.rest.controller.adminOnly;
+package api.bpartners.annotator.endpoint.rest.controller.adminonly;
 
 import api.bpartners.annotator.endpoint.rest.controller.mapper.AnnotationBatchReviewMapper;
 import api.bpartners.annotator.endpoint.rest.model.AnnotationBatchReview;
@@ -42,6 +42,7 @@ public class AnnotationBatchReviewController {
       @PathVariable String jobId,
       @PathVariable String taskId,
       @PathVariable String annotationBatchId,
+      @PathVariable String reviewId,
       @RequestBody AnnotationBatchReview annotationBatchReview) {
     api.bpartners.annotator.repository.model.AnnotationBatchReview saved =
         service.save(taskId, annotationBatchId, mapper.toDomain(annotationBatchReview));

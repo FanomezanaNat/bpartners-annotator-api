@@ -38,6 +38,7 @@ public class SecurityConf {
   private final AuthProvider authProvider;
   private final HandlerExceptionResolver exceptionResolver;
   private final AuthenticatedResourceProvider resourceProvider;
+  private static final String USER_TASKS_ANNOTATIONS_PATH = "/users/*/tasks/*/annotations";
 
   public SecurityConf(
       AuthProvider authProvider,
@@ -53,7 +54,7 @@ public class SecurityConf {
   public SecurityFilterChain configure(HttpSecurity http) throws Exception {
     // @formatter:off
     http.exceptionHandling(
-            (exceptionHandler) ->
+            exceptionHandler ->
                 exceptionHandler
                     .authenticationEntryPoint(
                         // note(spring-exception)
@@ -86,7 +87,7 @@ public class SecurityConf {
                         new AntPathRequestMatcher("/health/event/uuids", POST.name())))),
             AnonymousAuthenticationFilter.class)
         .authorizeHttpRequests(
-            (authorize) ->
+            authorize ->
                 authorize
                     .requestMatchers(OPTIONS, "/**")
                     .permitAll()
@@ -159,12 +160,12 @@ public class SecurityConf {
                         new SelfTeamMatcher(PUT, "/teams/*/jobs/*/tasks/*", resourceProvider))
                     .hasRole(ANNOTATOR.getRole())
                     .requestMatchers(
-                        new SelfUserMatcher(PUT, "/users/*/tasks/*/annotations", resourceProvider))
+                        new SelfUserMatcher(PUT, USER_TASKS_ANNOTATIONS_PATH, resourceProvider))
                     .hasRole(ANNOTATOR.getRole())
                     .requestMatchers(
-                        new SelfUserMatcher(GET, "/users/*/tasks/*/annotations", resourceProvider))
+                        new SelfUserMatcher(GET, USER_TASKS_ANNOTATIONS_PATH, resourceProvider))
                     .hasRole(ANNOTATOR.getRole())
-                    .requestMatchers(GET, "/users/*/tasks/*/annotations")
+                    .requestMatchers(GET, USER_TASKS_ANNOTATIONS_PATH)
                     .hasRole(ADMIN.getRole())
                     .requestMatchers(
                         new SelfUserMatcher(
@@ -212,7 +213,7 @@ public class SecurityConf {
     return new ProviderManager(authProvider);
   }
 
-  private BearerAuthFilter bearerFilter(RequestMatcher requestMatcher) throws Exception {
+  private BearerAuthFilter bearerFilter(RequestMatcher requestMatcher) {
     BearerAuthFilter bearerFilter = new BearerAuthFilter(requestMatcher, AUTHORIZATION_HEADER);
     bearerFilter.setAuthenticationManager(authenticationManager());
     bearerFilter.setAuthenticationSuccessHandler(

@@ -1,7 +1,5 @@
 package api.bpartners.annotator.endpoint.rest.controller;
 
-import static java.util.stream.Collectors.toList;
-
 import api.bpartners.annotator.endpoint.rest.controller.mapper.AnnotationBatchMapper;
 import api.bpartners.annotator.endpoint.rest.model.AnnotationBatch;
 import api.bpartners.annotator.endpoint.rest.validator.AnnotationBatchIdValidator;
@@ -32,7 +30,7 @@ public class UserAnnotationBatchController {
       @RequestParam BoundedPageSize pageSize) {
     return service.findAllByInterExternalAnnotatorIdAndTask(userId, taskId, page, pageSize).stream()
         .map(mapper::toRest)
-        .collect(toList());
+        .toList();
   }
 
   @GetMapping("/users/{userId}/tasks/{taskId}/annotations/{annotationBatchId}")
