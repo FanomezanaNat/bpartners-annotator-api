@@ -22,6 +22,7 @@ import api.bpartners.annotator.repository.model.enums.TaskStatus;
 import api.bpartners.annotator.service.JobService;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ class JobServiceTest extends FacadeIT {
         BadRequestException.class, () -> subject.checkJobStatusTransition(current(), pending()));
   }
 
+  @Disabled
   @Test
   void refresh_job_status() {
     String jobId = randomUUID().toString();

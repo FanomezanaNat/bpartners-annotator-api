@@ -12,7 +12,6 @@ import static org.springframework.data.domain.Sort.Order.asc;
 
 import api.bpartners.annotator.endpoint.event.EventProducer;
 import api.bpartners.annotator.endpoint.event.model.AnnotationStatisticsComputationTriggered;
-import api.bpartners.annotator.endpoint.event.model.GeoJobsNotificationSent;
 import api.bpartners.annotator.endpoint.event.model.JobCreated;
 import api.bpartners.annotator.endpoint.rest.model.JobType;
 import api.bpartners.annotator.model.BoundedPageSize;
@@ -185,7 +184,8 @@ public class JobService {
     }
     if (tasks.stream().allMatch(Task::isCompleted)) {
       persisted.setStatus(COMPLETED);
-      eventProducer.accept(List.of(new GeoJobsNotificationSent(persisted.getId())));
+      // Uncomment when full detection works correctly in geo-jobs
+      // eventProducer.accept(List.of(new GeoJobsNotificationSent(persisted.getId())));
     }
 
     return save(persisted);
