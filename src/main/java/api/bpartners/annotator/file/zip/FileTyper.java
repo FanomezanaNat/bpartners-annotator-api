@@ -1,4 +1,4 @@
-package api.bpartners.annotator.file;
+package api.bpartners.annotator.file.zip;
 
 import static org.springframework.http.MediaType.parseMediaType;
 

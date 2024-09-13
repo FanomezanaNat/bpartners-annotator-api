@@ -1,4 +1,4 @@
-package api.bpartners.annotator.file;
+package api.bpartners.annotator.file.bucket;
 
 import api.bpartners.annotator.PojaGenerated;
 import lombok.Getter;

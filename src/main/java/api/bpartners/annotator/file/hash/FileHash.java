@@ -1,4 +1,4 @@
-package api.bpartners.annotator.file;
+package api.bpartners.annotator.file.hash;
 
 import api.bpartners.annotator.PojaGenerated;
 

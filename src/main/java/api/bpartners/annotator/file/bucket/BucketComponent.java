@@ -1,8 +1,10 @@
-package api.bpartners.annotator.file;
+package api.bpartners.annotator.file.bucket;
 
 import static java.io.File.createTempFile;
 
 import api.bpartners.annotator.PojaGenerated;
+import api.bpartners.annotator.file.hash.FileHash;
+import api.bpartners.annotator.file.hash.FileHashAlgorithm;
 import java.io.File;
 import java.net.URL;
 import java.time.Duration;
