@@ -1,0 +1,46 @@
+name: Neon Branch Creation
+
+on:
+  push:
+    branches:
+      - 'prod'
+      - 'preprod'
+
+  workflow_dispatch:
+
+  workflow_call:
+
+jobs:
+  create_database_branch:
+    if: ${{ github.ref_name == 'prod' || github.ref_name == 'preprod' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      AWS_REGION: eu-west-3
+
+    steps:
+      - uses: actions/checkout@v4.1.6
+
+      - uses: actions/setup-java@v4.2.1
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
+      - uses: hei-school/aws-credentials-setter@v1.0.3
+        with:
+          secrets: ${{ toJSON(secrets) }}
+          region: ${{ env.AWS_REGION }}
+
+      - name: Retrieve DB Username from SSM
+        run: |
+          echo "USERNAME=$(aws ssm get-parameter --name '/bpartners-annotator/${{ github.ref_name }}/neon/db/username' --with-decryption --query Parameter.Value --output text)" >> $GITHUB_ENV
+
+      - name: Create Neon Database Branch
+        uses: neondatabase/create-branch-action@v5
+        with:
+          project_id: ${{ secrets.ID_PROJECT }}
+          branch_name: ${{ github.ref_name }}
+          username: ${{ env.USERNAME }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+
