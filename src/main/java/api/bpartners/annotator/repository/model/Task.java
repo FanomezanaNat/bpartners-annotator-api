@@ -33,7 +33,7 @@ public class Task {
   @Id private String id;
 
   @ManyToOne
-  @JoinColumn(name = "job_id", updatable = false)
+  @JoinColumn(name = "job_id")
   @ToString.Exclude
   private Job job;
 

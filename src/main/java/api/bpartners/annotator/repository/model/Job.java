@@ -58,8 +58,7 @@ public class Job {
   @JdbcTypeCode(NAMED_ENUM)
   private JobType type;
 
-  @OneToMany
-  @JoinColumn(insertable = false, updatable = false, name = "job_id", referencedColumnName = "id")
+  @OneToMany(mappedBy = "job", cascade = ALL)
   @JsonIgnoreProperties("job")
   @ToString.Exclude
   private List<Task> tasks;
